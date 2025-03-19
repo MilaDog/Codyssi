@@ -1,0 +1,52 @@
+[project]
+name = "codyssi"
+version = "0.1.0"
+description = "Solutions to Codyssi problems."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.2.0",
+    "pyright>=1.1.396",
+    "ruff>=0.11.0",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "D",
+    "I",
+    "F",
+    "E",
+    "W",
+    "Q",
+] # pydocstyle, isort, pyflakes, pycodestyle (error, warning)
+fixable = ["ALL"]
+ignore = ["D100", "D104", "D105", "D107", "D205"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+docstring-code-line-length = "dynamic"
+docstring-code-format = true
+
+[tool.pyright]
+include = ["src"]
+defineConstant = { DEBUG = true }
+reportMissingImports = "warning"
+reportMissingTypeStubs = true
+strictListInference = true
+strictDictionaryInference = true
+strictSetInference = true
+analyzeUnannotatedFunctions = true
+strictParameterNoneValue = true
+enableTypeIgnoreComments = true
+deprecateTypingAliases = true
+enableReachabilityAnalysis = true
+enableExperimentalFeatures = false
+disableBytesTypePromotions = true
