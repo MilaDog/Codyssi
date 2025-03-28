@@ -27,13 +27,7 @@ def do_all(grid: dict[tuple[int, int], int], amount: int, type_: str) -> None:
             assert "Invalid INSTRUCTION type."
 
         # Overflow
-        if grid[k] < 0:
-            while grid[k] < 0:
-                grid[k] += 1073741824
-
-        elif grid[k] > 1073741823:
-            while grid[k] > 1073741823:
-                grid[k] -= 1073741824
+        grid[k] = grid[k] % 1073741824
 
 
 def do_shift(grid: dict[tuple[int, int], int], size: int, type_: str, row_col_number: int, shift_amount: int) -> None:
@@ -80,13 +74,7 @@ def do_row_col_action(
             assert "Invalid INSTRUCTION type."
 
         # Overflow
-        if grid[position] < 0:
-            while grid[position] < 0:
-                grid[position] += 1073741824
-
-        elif grid[position] > 1073741823:
-            while grid[position] > 1073741823:
-                grid[position] -= 1073741824
+        grid[position] = grid[position] % 1073741824
 
 
 def do_instruction(instruction: list[str], grid: dict[tuple[int, int], int], size: int) -> None:
