@@ -19,10 +19,11 @@ def max_items_value(items: list[Item], cost_target: int) -> int:
     """Simple DP approach to finding the combination of Items that reach the target goal."""
     # Processing
     dp: list[Any] = [None for _ in range(cost_target + 1)]
-    dp[0] = (0, 0)
+    dp[0] = (0, 0)  # best combo (best_quality, least_materials)
 
     for item in items:
-        for total_cost in range(cost_target, -1, -1):
+        for total_cost in range(cost_target, -1, -1):  # reverse to not add items twice
+            # Have combination and is valid
             if total_cost + item.cost <= cost_target and dp[total_cost] is not None:
                 curr_quality, curr_materials = dp[total_cost]
                 new_value: tuple[int, int] = (curr_quality + item.quality, curr_materials + item.materials)
