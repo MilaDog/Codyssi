@@ -28,11 +28,11 @@ class Face:
 
     def rotate_clockwise(self) -> None:
         """Rotate the face clockwise."""
-        self.__grid = [list(reversed(col)) for col in zip(*self.__grid)]
+        self.__grid[:] = [[self.__grid[self.__size - j - 1][i] for j in range(self.__size)] for i in range(self.__size)]
 
     def rotate_counter_clockwise(self) -> None:
         """Rotate the face counter-clockwise."""
-        self.__grid = [list(row) for row in zip(*self.__grid[::-1])]
+        self.__grid[:] = [[self.__grid[j][self.__size - i - 1] for j in range(self.__size)] for i in range(self.__size)]
 
     def rotate_180(self) -> None:
         """Rotate the face 180 degrees."""
@@ -86,14 +86,8 @@ class Cube:
     def perform_actions(self, instructions: list[str], twists: str, wrap: bool = False) -> None:
         """Perform each instruction with the twist."""
         for instruction, twist in zip(instructions, twists + " "):
-            print(instruction, twist)
             self.__execute_instruction(instruction=instruction, wrap=wrap)
             self.__twist(twist=twist)
-
-            for f in self.__faces:
-                print(f"{f.id_}: ")
-                print("\n".join(["\t".join([str(i) for i in row]) for row in f.get_grid()]))
-                print()
 
     def __execute_instruction(self, instruction: str, wrap: bool) -> None:
         """Execute the given instruction on the current face."""
@@ -143,8 +137,8 @@ class Cube:
             # Grid rotation
             self.__up.rotate_counter_clockwise()
             self.__down.rotate_clockwise()
-            # self.__back.rotate_180()
-            # self.__left.rotate_180()
+            self.__back.rotate_180()
+            self.__left.rotate_180()
 
         elif twist == "U":
             # Face rotation
@@ -166,8 +160,8 @@ class Cube:
             # Grid rotation
             self.__up.rotate_clockwise()
             self.__down.rotate_counter_clockwise()
-            # self.__back.rotate_180()
-            # self.__right.rotate_180()
+            self.__back.rotate_180()
+            self.__right.rotate_180()
 
         elif twist == "D":
             # Face rotation
@@ -189,22 +183,22 @@ def part_01_02(size: int, instructions: list[str], twists: str) -> tuple[int, in
     return math.prod(sorted(cube.get_absorption())[-2:]), cube.get_overall_dominant_sum()
 
 
-# def part_03(size: int, instructions: list[str], twists: str) -> int:
-#     """Solve Part 03."""
-#     cube: Cube = Cube(face_size=size)
-#     cube.perform_actions(instructions=instructions, twists=twists, wrap=True)
-#     return cube.get_overall_dominant_sum()
+def part_03(size: int, instructions: list[str], twists: str) -> int:
+    """Solve Part 03."""
+    cube: Cube = Cube(face_size=size)
+    cube.perform_actions(instructions=instructions, twists=twists, wrap=True)
+    return cube.get_overall_dominant_sum()
 
 
 def solve() -> None:
     """Solve the problems."""
-    use_example: bool = True
+    use_example: bool = False
     file: str = "day16.em" if use_example else "day16.in"
 
     sections: list[str] = open(file).read().split("\n\n")
     twists: str = sections[-1]
     instructions: list[str] = sections[0].strip().split("\n")
-    size: int = 3
+    size: int = 80
 
     # Part 01, 02
     p1: int
@@ -212,11 +206,11 @@ def solve() -> None:
     p1, p2 = part_01_02(instructions=instructions, twists=twists, size=size)
 
     # Part 03
-    # p3: int = part_03(instructions=instructions, twists=twists, size=size)
+    p3: int = part_03(instructions=instructions, twists=twists, size=size)
 
     print(f"Part 01: {p1}")
     print(f"Part 02: {p2}")
-    # print(f"Part 03: {p3}")
+    print(f"Part 03: {p3}")
 
 
 if __name__ == "__main__":
